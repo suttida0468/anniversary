@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Anniversary 3.3 💕</title>
+    
+    <!-- Google Fonts: Mali -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,300;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #FF8FA3;
+            --primary-light: #ffeef2;
+            --secondary: #A2D2FF;
+            --accent: #FFB7B2;
+            --bg-color: #FFF9F5;
+            --text-main: #5D5D5D;
+            --white: #ffffff;
+            --shadow: 0 8px 24px rgba(255, 143, 163, 0.2);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ANIMATIONS --- */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .shake { animation: shake 0.5s; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 143, 163, 0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 143, 163, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 143, 163, 0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        @keyframes bloom { from { transform: scale(0) rotate(-20deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+
+        /* --- MUSIC & DECOR --- */
+        .music-btn {
+            position: fixed; top: 15px; right: 15px; z-index: 9999;
+            background: var(--white); width: 45px; height: 45px;
+            border-radius: 50%; box-shadow: var(--shadow);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary); cursor: pointer; border: 2px solid var(--primary-light);
+        }
+        .music-btn.playing { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .confetti {
+            position: fixed; width: 10px; height: 10px;
+            background-color: var(--primary); z-index: 2000;
+            pointer-events: none;
+        }
+
+        /* --- LOGIN --- */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #FFC3A0 0%, #FFAFBD 100%);
+            z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .login-box {
+            background: var(--white); padding: 40px 30px;
+            border-radius: 30px; text-align: center;
+            width: 100%; max-width: 340px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .input-pass {
+            width: 100%; padding: 15px; margin: 20px 0;
+            border: 2px solid var(--primary-light); border-radius: 15px;
+            font-family: inherit; font-size: 1.2rem; text-align: center; outline: none; letter-spacing: 5px;
+        }
+        .btn-login {
+            background: var(--primary); color: var(--white); border: none;
+            width: 100%; padding: 15px; border-radius: 15px; font-size: 1.1rem;
+            font-family: inherit; cursor: pointer; font-weight: bold;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        #app-container { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 90px; scroll-behavior: smooth; }
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--white); display: flex; justify-content: space-around;
+            padding: 12px 10px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 1000;
+            border-top-left-radius: 20px; border-top-right-radius: 20px;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #ccc; font-size: 0.75rem; cursor: pointer; width: 20%; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-5px); text-shadow: 0 4px 10px rgba(255, 143, 163, 0.4); }
+
+        .page-section { display: none; max-width: 500px; margin: 0 auto; }
+        .page-section.active-section { display: block; }
+
+        /* --- HOME --- */
+        .hero-card {
+            background: linear-gradient(135deg, #fff5f7, #fff);
+            border-radius: 30px; padding: 40px 20px; text-align: center;
+            margin-bottom: 20px; border: 2px solid var(--primary-light);
+        }
+        .hero-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .hero-img {
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            border: 5px solid var(--primary); margin: 15px auto;
+            box-shadow: 0 10px 20px rgba(255, 143, 163, 0.3);
+        }
+        .action-area { text-align: center; margin-top: 20px; }
+        .flower-rain-btn {
+            background: linear-gradient(45deg, #FF9A9E 0%, #FECFEF 100%);
+            border: none; padding: 12px 30px; border-radius: 50px; color: white;
+            font-family: inherit; font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4); animation: pulse 2s infinite;
+        }
+
+        /* --- TIMELINE & TIMER --- */
+        .timer-container {
+            background: var(--white); padding: 15px; border-radius: 20px;
+            box-shadow: var(--shadow); margin-bottom: 25px; text-align: center;
+        }
+        .timer-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .time-box {
+            background: var(--primary-light); padding: 10px 5px;
+            border-radius: 15px; display: flex; flex-direction: column;
+        }
+        .time-val { font-size: 1.4rem; font-weight: bold; color: var(--primary); line-height: 1.2; }
+        .time-label { font-size: 0.7rem; color: #888; }
+
+        .timeline-wrapper { position: relative; padding-left: 20px; }
+        .timeline-line { position: absolute; left: 7px; top: 10px; bottom: 0; width: 4px; background: var(--primary-light); border-radius: 2px; }
+        .tl-item { margin-bottom: 25px; position: relative; }
+        .tl-dot { width: 18px; height: 18px; background: var(--primary); border: 3px solid white; border-radius: 50%; position: absolute; left: -19px; top: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2; }
+        .tl-card { background: var(--white); padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 15px; }
+        .tl-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-light); flex-shrink: 0; }
+        .tl-date { font-size: 0.8rem; color: var(--primary); font-weight: bold; margin-bottom: 2px; display: block; }
+
+        /* --- GIFTS --- */
+        .gift-container { text-align: center; padding-bottom: 40px; display: flex; flex-wrap: wrap; justify-content: center; }
+        .gift-item { width: 45%; margin: 2.5%; position: relative; animation: float 3s ease-in-out infinite; cursor: pointer; }
+        .gift-item:nth-child(even) { animation-delay: 1.5s; }
+        .gift-box {
+            background: var(--white); padding: 25px; border-radius: 25px;
+            box-shadow: var(--shadow); transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        .gift-box:active { transform: scale(0.95); }
+        .gift-icon { font-size: 3rem; margin-bottom: 10px; display: block; }
+        .gift-name { font-size: 0.9rem; font-weight: bold; }
+        
+        /* --- GAMES --- */
+        .game-card {
+            background: var(--white); padding: 25px; border-radius: 25px;
+            text-align: center; box-shadow: var(--shadow); margin-bottom: 20px;
+            cursor: pointer; border: 2px solid transparent; transition: 0.3s;
+        }
+        .game-card:active { transform: scale(0.98); }
+        .game-icon { font-size: 2.5rem; color: var(--secondary); margin-bottom: 10px; }
+        
+        /* --- QUIZ UI --- */
+        .quiz-container h3 { color: var(--primary); margin-bottom: 15px; text-align: center; }
+        .quiz-options { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        }
+        .quiz-btn {
+            background: white; border: 2px solid var(--primary-light);
+            padding: 15px; border-radius: 15px; font-family: inherit;
+            cursor: pointer; text-align: left; font-size: 1rem; color: var(--text-main);
+            width: 100%;
+            transition: 0.2s;
+        }
+        .quiz-btn:active { transform: scale(0.98); }
+        .quiz-btn.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .quiz-btn.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+
+        /* --- MEMORY GAME UI (UPDATED STABILITY) --- */
+        .memory-grid { 
+            display: grid; 
+            gap: 10px; 
+            margin-top: 10px;
+            perspective: 1000px; /* Essential for 3D effect */
+            perspective-origin: center; /* Center the view */
+        }
+        .memory-card-item {
+            aspect-ratio: 1;
+            position: relative;
+            transform-style: preserve-3d; /* Essential for 3D flip */
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+            width: 100%; /* Ensure width fills grid */
+            height: 100%; /* Ensure height fills grid */
+        }
+        .memory-card-item.flipped {
+            transform: rotateY(180deg);
+        }
+        .memory-card-item.matched {
+            opacity: 0;
+            transform: rotateY(180deg) scale(0.9);
+            pointer-events: none; /* Prevent clicking matched cards */
+        }
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari fix */
+            backface-visibility: hidden; /* Standard fix */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        .card-front {
+            background: var(--primary-light);
+            color: white;
+            transform: rotateY(0deg);
+            border: 2px solid white; /* Define edge */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card-back {
+            background: white;
+            -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 5000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: var(--white); width: 90%; max-width: 380px;
+            border-radius: 25px; padding: 30px 20px; text-align: center;
+            position: relative; transform: translateY(20px); transition: 0.3s;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #ccc; cursor: pointer; }
+        
+        /* Flower Effect in Modal */
+        .bouquet-container { position: relative; height: 200px; display: flex; justify-content: center; align-items: center; }
+        .flower-main { font-size: 6rem; animation: bloom 1s ease-out forwards; }
+        .flower-leaf { position: absolute; font-size: 3rem; opacity: 0; animation: bloom 0.8s 0.2s ease-out forwards; }
+        .f1 { top: 20%; left: 20%; transform: rotate(-45deg); }
+        .f2 { bottom: 20%; right: 20%; transform: rotate(45deg); }
+        .f3 { top: 10%; right: 25%; font-size: 2.5rem; transform: rotate(20deg); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Music -->
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_2265008dd1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle -->
+    <div class="music-btn" onclick="toggleMusic()">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
+    <!-- Login -->
+    <div id="login-overlay">
+        <div class="login-box fade-in">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🔐</div>
+            <h2 style="color: var(--primary);"> Anniversary </h2>
+            <p style="color: #888; font-size: 0.9rem;">ใส่รหัสวันครบรอบ (DDMMYY)</p>
+            <input type="tel" id="pass-input" class="input-pass" maxlength="6" placeholder="💖💖💖💖💖💖">
+            <button class="btn-login" onclick="checkLogin()">เข้าสู่เว็บไซต์ 💖</button>
+            <p id="login-error" style="color: red; font-size: 0.8rem; margin-top: 10px; display: none;">รหัสไม่ถูกต้องจ๊ะ</p>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <main id="app-container">
+        
+        <!-- HOME -->
+        <section id="page-home" class="page-section active-section">
+            <div class="hero-card fade-in">
+                <h1 class="hero-title">Happy Anniversary 1 Year 4 Months</h1>
+                <p style="color: #888;">ขอบคุณที่อยู่ข้างๆกันมาตลอดนะคะ</p>
+                
+                <img src="mee/01.jpg" alt="Us" class="hero-img">
+                
+                <div class="action-area">
+                    <button class="flower-rain-btn" onclick="dropFlowers()">💐 โปรยดอกไม้ร่วงหน่อย</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section id="page-timeline" class="page-section">
+            <div class="timer-container fade-in">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">เวลาของเราาาา</h3>
+                <div class="timer-grid">
+                    <div class="time-box">
+                        <span class="time-val" id="t-days">0</span>
+                        <span class="time-label">วัน</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-val" id="t-hours">0</span>
+                        <span class="time-label">ชม.</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-val" id="t-mins">0</span>
+                        <span class="time-label">นาที</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-val" id="t-secs">0</span>
+                        <span class="time-label">วินาที</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-wrapper">
+                <div class="timeline-line"></div>
+                
+                <div class="tl-item fade-in-scroll">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img src="mee/02.jpg" class="tl-img">
+                        <div>
+                            <span class="tl-date">3 มี.ค. 2024</span>
+                            <h3>วันแรกของเรา</h3>
+                            <p style="font-size: 0.85rem; color: #666;">โบ๊ะบ๊ะมากอ่ะ คุยกันวันแรกเค้าก็บอกหมดแล้วไม่กั๊กเลยแบบงงๆ เห้อๆๆๆ ว่าไปก็ผ่านมานานแล้วนะเนี่ย จากวันนั้นถึงรันนี้ รักบี๋ไม่น้อยลงเลยอ่ะ ถึงจะมีไม่เข้าใจกันบ่อยมากๆเลย แต่ก็รักมากๆเหมือนเดิมนะคะ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tl-item fade-in-scroll" style="animation-delay: 0.1s;">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img src="mee/14.jpg" class="tl-img">
+                        <div>
+                            <span class="tl-date">05 มิ.ย. 2024</span>
+                            <h3>เดตแรก</h3>
+                            <p style="font-size: 0.85rem; color: #666;">โอ๊ยวันนั้นใจเต้นตุ่บๆ แทบจะออกมาเต้นข้องนอกละ ตื่นเต้นมากเลยจำด้แมน ไม่กล้ามองหน้าบี๋ด้วยซ้ำอ่ะ ไม่คิดไม่ฝันว่าชีวิตนี้จะมาเจอกับอะไรที่ทำให้ใจเต้นขนาดนี้เลยจริงๆ นึกแล้วก็ยังนั่งนิ้มเห้อๆๆ ดีจังเลยที่เราได้เจอกัน ได้รักกันแบบนี้อ่ะ ขอบคุณนะคะ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tl-item fade-in-scroll" style="animation-delay: 0.2s;">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img src="mee/16.jpg" class="tl-img">
+                        <div>
+                            <span class="tl-date">23 ก.ย. 2025</span>
+                            <h3>วันแฟนเดย์</h3>
+                            <p style="font-size: 0.85rem; color: #666;">สวัดดีแฟนเดยยยยยยย์ เป็นการขอเป็นแฟนที่ฮาร์คอมากกกกก แต่เขินมากด้วยๆๆๆ อาจจะเป็นการขอที่บี๋ไม่ค่อยพร้อม ด้วยจะโดนกดดันจากหลายๆอย่างหรืออะไรก็แล้วแต่ก็เหอะ สุดท้ายแล้วบี๋ก็ทำหน้าที่แฟนได้ดีมากๆสำหรับเค้า ดูแลเอาใจใส่กันมาโดยตลอด ทนอยู่กับเด็กดื้อเอาแต่ใจอย่างเค้ามาได้ตั้งนานแหนะ ขอบคุณจริงๆนะคะ ต่อให้จะเจอปัญหาอะไร จะตีกันแค่ไหน บี๋ก็ยังอยู่ข้างๆเค้ามาตลอด รักบี๋มากเลยนะคะ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GIFTS -->
+        <section id="page-gifts" class="page-section">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: var(--primary);">🎁 ของขวัญพิเศษ</h2>
+                <p style="font-size: 0.9rem; color: #888;">กดเพื่อดูได้เลยนะคะ</p>
+            </div>
+
+            <div class="gift-container">
+                <!-- Gift 1: Letter -->
+                <div class="gift-item" onclick="openGift(this, 'letter')">
+                    <div class="gift-box">
+                        <span class="gift-icon">💌</span>
+                        <div class="gift-name">จดหมายถึงคุณบี๋ของเค้า</div>
+                    </div>
+                </div>
+
+                <!-- Gift 2: Teddy Bear -->
+                <div class="gift-item" onclick="openGift(this, 'teddy')">
+                    <div class="gift-box">
+                        <span class="gift-icon">🧸</span>
+                        <div class="gift-name">ลูกชายยยยย</div>
+                    </div>
+                </div>
+
+                <!-- Gift 3: Flower -->
+                <div class="gift-item" onclick="openGift(this, 'flower')">
+                    <div class="gift-box">
+                        <span class="gift-icon">💐</span>
+                        <div class="gift-name">ให้ช่อดอกไม้ค่ะ</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAMES -->
+        <section id="page-games" class="page-section">
+            <div id="game-menu">
+                <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Mini Games 🎮</h2>
+                
+                <!-- Quiz Game Entry -->
+                <div class="game-card" onclick="startQuiz()">
+                    <div class="game-icon">❓</div>
+                    <h3>ตอบให้ถูกนะ ไม่ถูกจะโดนตื้บบบบ</h3>
+                    <p style="font-size: 0.8rem; color: #888;">คำถามทายใจจจจจ!!!!</p>
+                </div>
+
+                <!-- Memory Game Entry -->
+                <div class="game-card" onclick="startMemoryGame()">
+                    <div class="game-icon">🃏</div>
+                    <h3>จับคู่ความอีโมจิ!!</h3>
+                    <p style="font-size: 0.8rem; color: #888;">เล่นเกมกันค่ะะ!</p>
+                </div>
+            </div>
+
+            <!-- Quiz View (Hidden) -->
+            <div id="quiz-view" class="hidden fade-in">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <button onclick="exitGame()" style="background:none; border:none; color: #888; font-family: inherit;"><i class="fa-solid fa-arrow-left"></i> กลับ</button>
+                    <h3 id="quiz-q" style="color: var(--primary); margin-top: 15px;">คำถาม...</h3>
+                </div>
+                <div class="quiz-container" id="quiz-options-area">
+                    <!-- Options here -->
+                </div>
+            </div>
+
+            <!-- Memory Game View (Hidden) -->
+            <div id="memory-view" class="hidden fade-in">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <button onclick="exitGame()" style="background:none; border:none; color: #888; font-family: inherit;"><i class="fa-solid fa-arrow-left"></i> กลับ</button>
+                    <h3 style="color: var(--primary); margin-top: 10px;">Memory Match</h3>
+                    <p style="font-size:0.8rem; color:#888;">ด่านที่: <span id="level-indicator">1</span></p>
+                </div>
+                <div class="memory-grid" id="memory-grid">
+                    <!-- Cards -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)">
+            <i class="fa-solid fa-house"></i>
+            <span>หน้าหลัก</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('timeline', this)">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>เวลา</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('gifts', this)">
+            <i class="fa-solid fa-gift"></i>
+            <span>ของขวัญ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('games', this)">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>เกม</span>
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="main-modal" onclick="closeModal(event)">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModalForce()">&times;</span>
+            <div id="modal-content-area"></div>
+        </div>
+    </div>
+
+    <script>
+        /* --- CONFIG --- */
+        const PASSCODE = "230925"; 
+        const START_DATE = new Date("2024-03-03T00:00:00"); 
+        
+        /* --- TIMER LOGIC --- */
+        function startTimer() {
+            setInterval(() => {
+                const now = new Date();
+                let diff = now - START_DATE;
+                if (diff < 0) diff = 0;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const mins = Math.floor((diff / (1000 * 60)) % 60);
+                const secs = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('t-days').innerText = days;
+                document.getElementById('t-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('t-mins').innerText = mins.toString().padStart(2, '0');
+                document.getElementById('t-secs').innerText = secs.toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        /* --- LOGIN --- */
+        function checkLogin() {
+            const input = document.getElementById('pass-input').value;
+            if (input === PASSCODE) {
+                document.getElementById('login-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    startTimer(); 
+                    toggleMusic(true);
+                    dropFlowers();
+                }, 500);
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+                document.querySelector('.login-box').classList.add('shake');
+                setTimeout(() => document.querySelector('.login-box').classList.remove('shake'), 500);
+            }
+        }
+
+        /* --- NAVIGATION --- */
+        function switchTab(tabId, navEl) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
+            document.getElementById('page-' + tabId).classList.add('active-section');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            navEl.classList.add('active');
+            document.getElementById('app-container').scrollTop = 0;
+        }
+
+        /* --- UTILS --- */
+        function toggleMusic(forcePlay = false) {
+            const audio = document.getElementById('bg-music');
+            const btn = document.querySelector('.music-btn');
+            if (forcePlay) {
+                audio.play().then(() => btn.classList.add('playing')).catch(e => console.log(e));
+            } else {
+                if (audio.paused) { audio.play(); btn.classList.add('playing'); } 
+                else { audio.pause(); btn.classList.remove('playing'); }
+            }
+        }
+
+        function dropFlowers() {
+            const flowers = ['🌸', '🌹', '💖', '✨', '🌷', '🌼'];
+            for(let i=0; i<30; i++) {
+                const el = document.createElement('div');
+                el.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                el.style.position = 'fixed';
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.top = '-50px';
+                el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                el.style.zIndex = 9999;
+                el.style.transition = `top ${Math.random() * 2 + 2}s linear, opacity 3s ease`;
+                el.className = 'confetti';
+                document.body.appendChild(el);
+                setTimeout(() => { el.style.top = '110vh'; el.style.opacity = '0'; }, 100);
+                setTimeout(() => el.remove(), 5000);
+            }
+        }
+
+        /* --- MODAL --- */
+        const modal = document.getElementById('main-modal');
+        const modalContent = document.getElementById('modal-content-area');
+        function showModal(html) { modalContent.innerHTML = html; modal.classList.add('active'); }
+        function closeModal(e) { if (e.target === modal) modal.classList.remove('active'); }
+        function closeModalForce() { modal.classList.remove('active'); }
+
+        /* --- GIFT LOGIC --- */
+        function openGift(el, type) {
+            let content = '';
+            if (type === 'letter') {
+                content = `
+                    <div style="text-align:left;">
+                        <h3 style="color:var(--primary); text-align:center;">จดหมายถึงคุณบี๋ค่ะ</h3>
+                        <div style="background:#fffdf0; padding:20px; border:1px solid #eee; color:#555; line-height:1.8; font-size:0.95rem; border-radius:10px; box-shadow:inset 0 0 10px rgba(0,0,0,0.05);">
+                            <p>ถึงคุณบี๋,</p>
+                            <p>สุขสันต์วันครบรอบนะคะ</p>
+                            <p>ขอบคุณที่อยู่ข้างๆ กันมาตลอดในทุกๆวัน ขอบคุณที่ทนเค้ามาได้จนทุกวันนี้ เวลามันนานมากๆเลยละ ตั้งแต่รู้จักมาไม่เคยรักบี๋น้อบลงเลยจริงๆ</p>
+                            <p>ถึงจะไม่เขาใจกันบ่อยๆ เค้าดื้อบ่อยมากด้วย เผลอทำให้บี๋หงุดหงิดเกือบจะทุกวัน เป็นเด็กดื้อของบี๋มาตั้งนานแหนะ แต่บี๋ก็ไม่เคยทิ้งกันไปไหนเลย ขอบคุณมากๆเลยจริงๆนะคะ รักบี๋ทุกวันเหมือนเดิมด้วย</p>
+                            <p>ไม่รู้ว่าเวลาที่บี๋มองย้อนกลับไปในวันที่รูจักกันแรกๆบี๋จะรู้สึกยังไง แต่สำหรับเค้า ไม่เคยรูสึกเสียใจเลยจริงๆ ขอบคุณทุกสิ่วอย่างที่ทำให้เรามาเจอกัน จนทุกวันนี้ก็ยังรูสึกขอบคุณมากๆเลยหละ ขอบคุณทุกอย่างที่ทำให้เรามีกันและกันในวันนี้นะคะ</p>
+                            <p style="text-align:right; margin-top:20px;">รักบี๋มากๆเลย อยู่ข้างๆกันไปนานๆนะ 💖</p>
+                        </div>
+                    </div>`;
+            } else if (type === 'teddy') {
+                content = `
+                    <div class="pop-in">
+                        <div style="border-radius:15px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.1); position:relative;">
+                            <img src="mee/15.jpg" style="width:100%; display:block;">
+                            <div style="position:absolute; bottom:0; width:100%; background:rgba(255,255,255,0.9); padding:15px; text-align:center;">
+                                <h3 style="color:var(--primary);">ลูกชายตัวกะเปี๊ยกกก 💖</h3>
+                                <p>เจ้าตัวนี้ลูกชายเค้าเองแหละ อิอิ น่ารักชะมุเลยอุ่ๆๆๆ บี๋ตั้งชื่อว่า "วาสนา" เพราะว่าช่วงนั้นเค้าชอบพูดว่าวาสนาทุกครั้งเลยเวลาที่เราคิดหรือพูดตรงกัน แต่บี๋ชอบบอกว่า "บังเอิน" ชิ้!!! (จริงๆต้องใส่กะเต๊าะด้วย แต่หารูปไม่เจอเลย แง้งงงง)</p>
+                            </div>
+                        </div>
+                    </div>`;
+            } else if (type === 'flower') {
+                content = `
+                    <div>
+                        <h3 style="color:var(--primary); margin-bottom:10px;">ช่อดอกไม้ให้เธอ</h3>
+                        <div class="bouquet-container">
+                            <div class="flower-leaf f1">🌿</div>
+                            <div class="flower-leaf f2">🌿</div>
+                            <div class="flower-leaf f3">✨</div>
+                            <div class="flower-main">💐</div>
+                        </div>
+                        <p style="margin-top:20px; color:#666;">ดอกไม้สำหรับคุณบี๋ ขอให้วันนี้และทุกๆวัน เป็นวันที่สวยงามเหมือนดอกไม้ช่อนี้นะคะ จุ๊บๆ</p>
+                    </div>`;
+                setTimeout(dropFlowers, 500);
+            }
+
+            showModal(content);
+        }
+
+        /* --- QUIZ GAME --- */
+        const quizData = [
+            { q: "วันครบรอบของเราคือวันที่เท่าไหร่?", a: ["1 ม.ค.", "3 มี.ค.", "14 ก.พ."], correct: 1 },
+            { q: "อาหารโปรดที่เรากินบ่อยๆ เราคืออะไร?", a: ["หม่าล่า", "ผัดไทย", "สลัด"], correct: 0 },
+            { q: "วันเกิดของเค้าคือวันที่เท่าไหร่?", a: ["1 มกราคม", "30 ธันวาคม", "5 กันยายน"], correct: 2 },
+            { q: "ลูกชายเราชื่ออะไร?", a: ["สมชาย,สมหญิง", "วาสนา,บังเอิน", "กะเต๊าะ,วาสนา"], correct: 2 }, 
+            { q: "สถานที่ที่เราเจอกันครั้งแรกคือ?", a: ["บ้าน", "โรงพยาบาล มอ.", "สถานีรถไฟ"], correct: 1 },
+            { q: "บี๋รักเค้ามากแค่ไหนนนน?", a: ["รักปานกลาง งั้นๆแหละ", "รักนิดหน่อย นิดเดียวพอ", "รักที่สุดรักมากกกก"], correct: 2 }
+        ];
+        let currentQuizIndex = 0;
+
+        function startQuiz() {
+            document.getElementById('game-menu').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+            currentQuizIndex = 0;
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (currentQuizIndex >= quizData.length) {
+                document.getElementById('quiz-q').innerText = "จบเกมแล้ว!";
+                document.getElementById('quiz-options-area').innerHTML = `
+                    <div style="text-align:center;">
+                        <i class="fa-solid fa-heart" style="font-size:3rem; color:var(--primary);"></i>
+                        <p style="margin-top:10px;">เก่งมากค่ะ! รู้ใจฉันดีจัง 💖</p>
+                        <button class="btn-login" onclick="exitGame()" style="margin-top:15px;">เล่นใหม่</button>
+                    </div>`;
+                return;
+            }
+
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-q').innerText = `คำถามที่ ${currentQuizIndex + 1}: ${q.q}`;
+            const area = document.getElementById('quiz-options-area');
+            area.innerHTML = '';
+
+            q.a.forEach((ans, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn';
+                btn.innerText = ans;
+                btn.onclick = () => checkQuizAnswer(idx, q.correct, btn);
+                area.appendChild(btn);
+            });
+        }
+
+        function checkQuizAnswer(selected, correct, btn) {
+            const allBtns = document.querySelectorAll('.quiz-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('wrong');
+                allBtns[correct].classList.add('correct');
+            }
+
+            setTimeout(() => {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            }, 1000);
+        }
+
+        /* --- MEMORY GAME (STABILITY FIX) --- */
+        const levels = [
+            { icons: ['💖', '🍕', '🐱', '🎁'], cols: 2 }, 
+            { icons: ['💖', '🍕', '🐱', '🎁', '🍦', '🎈'], cols: 3 }, 
+            { icons: ['💖', '🍕', '🐱', '🎁', '🍦', '🎈', '🌈', '🦄'], cols: 4 } 
+        ];
+        
+        let memoryCurrentLevel = 0;
+        let gameCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function startMemoryGame() {
+            memoryCurrentLevel = 0;
+            initMemoryLevel();
+            document.getElementById('game-menu').classList.add('hidden');
+            document.getElementById('memory-view').classList.remove('hidden');
+        }
+
+        function initMemoryLevel() {
+            flippedCards = [];
+            matchedPairs = 0;
+            document.getElementById('level-indicator').innerText = memoryCurrentLevel + 1;
+
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+            
+            grid.style.gridTemplateColumns = `repeat(${levels[memoryCurrentLevel].cols}, 1fr)`;
+
+            let levelIcons = levels[memoryCurrentLevel].icons;
+            gameCards = [...levelIcons, ...levelIcons]; 
+            gameCards.sort(() => Math.random() - 0.5);
+
+            gameCards.forEach((icon) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card-item';
+                card.dataset.icon = icon;
+                
+                // Use SPAN for emoji wrapper to ensure stability in flexbox
+                card.innerHTML = `
+                    <div class="card-face card-front"><i class="fa-solid fa-question"></i></div>
+                    <div class="card-face card-back"><span>${icon}</span></div>
+                `;
+                
+                card.onclick = () => flipMemoryCard(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipMemoryCard(card) {
+            if (card.classList.contains('flipped') || card.classList.contains('matched') || flippedCards.length >= 2) return;
+
+            card.classList.add('flipped');
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                if (flippedCards[0].dataset.icon === flippedCards[1].dataset.icon) {
+                    flippedCards.forEach(c => c.classList.add('matched'));
+                    matchedPairs++;
+                    flippedCards = [];
+
+                    if (matchedPairs === levels[memoryCurrentLevel].icons.length) {
+                        setTimeout(() => {
+                            if (memoryCurrentLevel < levels.length - 1) {
+                                showModal(`
+                                    <h3>ผ่านด่าน ${memoryCurrentLevel + 1}! 🎉</h3>
+                                    <p>เก่งมากค่ะ!!!!</p>
+                                    <button class="btn-login" onclick="nextLevel()" style="margin-top:15px;">ด่านต่อไป</button>
+                                `);
+                            } else {
+                                showModal(`
+                                    <h3>จบเกมแล้ว! 🏆</h3>
+                                    <p>ผ่านทุกด่านซะด้วย ยินดีด้วยค่ะ!</p>
+                                    <button class="btn-login" onclick="exitGame()" style="margin-top:15px;">เล่นใหม่</button>
+                                `);
+                                dropFlowers();
+                            }
+                        }, 500);
+                    }
+                } else {
+                    setTimeout(() => {
+                        flippedCards.forEach(c => c.classList.remove('flipped'));
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+        function nextLevel() {
+            closeModalForce();
+            memoryCurrentLevel++;
+            initMemoryLevel();
+        }
+
+        function exitGame() {
+            closeModalForce();
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('memory-view').classList.add('hidden');
+            document.getElementById('game-menu').classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>
